@@ -13,6 +13,35 @@ import { Calendar } from "../ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { Checkbox } from "../ui/checkbox";
+import Link from "next/link";
+
+const items = [
+  {
+    id: "recents",
+    label: "Recents",
+  },
+  {
+    id: "home",
+    label: "Home",
+  },
+  {
+    id: "applications",
+    label: "Applications",
+  },
+  {
+    id: "desktop",
+    label: "Desktop",
+  },
+  {
+    id: "downloads",
+    label: "Downloads",
+  },
+  {
+    id: "documents",
+    label: "Documents",
+  },
+];
 
 type BasicFormProps = {
   form: UseFormReturn<FormData>;
@@ -179,6 +208,60 @@ export const BasicForm = ({ form, onSubmit }: BasicFormProps) => {
                   </FormItem>
                 </RadioGroup>
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="mobile"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+              <FormControl>
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Use different settings for my mobile devices</FormLabel>
+                <FormDescription>
+                  You can manage your mobile notifications in the <Link href="/examples/forms">mobile settings</Link> page.
+                </FormDescription>
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="items"
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-base">Sidebar</FormLabel>
+                <FormDescription>Select the items you want to display in the sidebar.</FormDescription>
+              </div>
+              {items.map((item) => (
+                <FormField
+                  key={item.id}
+                  control={form.control}
+                  name="items"
+                  render={({ field }) => {
+                    return (
+                      <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(item.id)}
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...field.value, item.id])
+                                : field.onChange(field.value.length && field.value?.filter((value) => value !== item.id));
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="text-sm font-normal">{item.label}</FormLabel>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
               <FormMessage />
             </FormItem>
           )}

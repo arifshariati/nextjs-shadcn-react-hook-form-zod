@@ -7,9 +7,11 @@ import { FormData, formSchema } from "@/components/forms/basic-form-scheme";
 import { Container } from "@/components/container";
 import { BasicForm } from "@/components/forms";
 import CodeDisplay from "@/components/code-display";
+import { useToast } from "@/components/ui/use-toast";
 
 const BasicFormPage = () => {
   const [formOutput, setFormOutput] = useState<any>(null);
+  const { toast } = useToast();
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -21,9 +23,15 @@ const BasicFormPage = () => {
       securityEmails: false,
       bio: "",
       notificationType: "all",
+      mobile: false,
+      items: [],
     },
   });
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    toast({
+      title: "Form submit",
+      description: "Form submission triggered and validation passed ✅",
+    });
     setFormOutput(values);
     console.log(values);
   };
