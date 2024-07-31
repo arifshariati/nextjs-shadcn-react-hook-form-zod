@@ -64,7 +64,7 @@ export const BasicForm = ({ form, onSubmit }: BasicFormProps) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="AF">Afghanistan</SelectItem>
+                  <SelectItem value="GB">Great Britain</SelectItem>
                   <SelectItem value="FR">France</SelectItem>
                   <SelectItem value="US">United States</SelectItem>
                 </SelectContent>
