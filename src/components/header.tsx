@@ -1,6 +1,9 @@
+"use client";
 import { BookText } from "lucide-react";
 import Link from "next/link";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "./ui/navigation-menu";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 type NavigationLinksType = {
   title: string;
@@ -11,8 +14,13 @@ const NavigationLinks: NavigationLinksType[] = [
     title: "Basic Form",
     href: "/basic-form",
   },
+  {
+    title: "Json to Form",
+    href: "/json-to-form",
+  },
 ];
-const header = () => {
+const Header = () => {
+  const currentPath = usePathname();
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -25,7 +33,9 @@ const header = () => {
             {NavigationLinks.map(({ title, href }) => (
               <NavigationMenuItem key={href}>
                 <Link href={href} legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>{title}</NavigationMenuLink>
+                  <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), currentPath === href && "bg-accent")}>
+                    {title}
+                  </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
             ))}
@@ -36,4 +46,4 @@ const header = () => {
   );
 };
 
-export default header;
+export default Header;
