@@ -6,8 +6,8 @@ type FormsLayoutProps = {
 
 const FormsLayout = ({ children }: FormsLayoutProps) => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between px-2 py-5 md:px-10 lg:px-24">
-      <Container fullWidth>{children}</Container>
+    <main className="flex min-h-screen max-w-[1200px] mx-auto">
+      <Container>{children}</Container>
     </main>
   );
 };
