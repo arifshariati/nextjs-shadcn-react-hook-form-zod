@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { z, ZodTypeAny } from "zod";
 
 export type ZodMethodType = "string" | "number" | "boolean" | "date";
 
 type ZodMappings = {
-  [key in ZodMethodType]: () => any;
+  [key in ZodMethodType]: () => ZodTypeAny;
 };
 
 export const zodMappings: ZodMappings = {

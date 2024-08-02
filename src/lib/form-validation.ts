@@ -1,4 +1,4 @@
-import { z, ZodSchema } from "zod";
+import { z, ZodSchema, ZodTypeAny } from "zod";
 import { zodMappings, ZodMethodType } from "./zod-mappings";
 import { ValidationRule } from "./form.types";
 
@@ -10,8 +10,12 @@ type FormFieldConfig = {
   };
 };
 
-export const generateZodSchema = (fields: FormFieldConfig[]): ZodSchema<any> => {
-  const shape: any = {};
+type Shape = {
+  [key: string]: ZodTypeAny;
+};
+
+export const generateZodSchema = (fields: FormFieldConfig[]): ZodSchema<Shape> => {
+  const shape: Shape = {};
   fields.forEach((field) => {
     const zodMethod = zodMappings[field.validation.type];
     if (!zodMethod) {
@@ -22,7 +26,7 @@ export const generateZodSchema = (fields: FormFieldConfig[]): ZodSchema<any> => 
     field.validation.rules.forEach((rule) => {
       const method = rule.method as keyof typeof schema;
       if (typeof schema[method] === "function") {
-        schema = (schema[method] as any)(...rule.params);
+        schema = schema[method](...rule.params);
       } else {
         throw new Error(`Invalid method: ${rule.method}`);
       }
